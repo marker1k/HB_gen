@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Генератор конфигурационного скрипта Header Bidding</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="conf.js"></script>
+</head>
+
+<body>
+	<div class="header">Генератор конфигурационного скрипта для Header Bidding</div>
+	<div class="form">
+		<div id="biddersMap">
+			<h3>Учаcтники торгов  <span class="desc">(Bidders Map)</span></h3>
+			<div id="biddersMapInner"></div>
+			<button id="addBiddersMapUiElement" onclick="addBiddersMapUiElement();">Добавить</button>
+		</div>
+		<br>
+		<hr>
+		<div id="adUnits">
+			<h3>Рекламные блоки <span class="desc">(Ad Units)</span></h3>
+			<div id="adUnitsInner"></div>
+			<button id="addAdUnitsUiElement" onclick="addAdUnitsUiElement();createBiddersInUseArray();">Добавить</button>
+		</div>
+		<br>
+		<hr>
+		<h3>Время ответа <span class="desc">(User timeout)</span></h3>
+		<p style="font-size: 15px;color: gray;">Время ожидания ответа от сервера покупателя, рекомендуемое время 500 мс (максимально возможное 3000 мс, но в таком случае скорость загрузки основного контента сайта будет производится с задержкой.</p>
+		<input id="userTimeout" placeholder="500"> </div>
+	<div class="container">
+		<div id="result">
+			<h3>Скрипт</h3>
+			<button class="generate" onclick="makeInstall();">Генерация</button>
+			<br>
+			<textarea id="result_textarea" disabled="disabled"></textarea>
+		</div>
+	</div>
+	<style>
+
+	</style>
+</body>
+
+</html>

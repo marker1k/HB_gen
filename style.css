@@ -1,0 +1,139 @@
+ body {
+     font-family: 'YS Text',Arial,Helvetica,sans-serif;
+     /*letter-spacing: 0.25px;*/
+     max-width: 1200px;
+     border-image-slice: 1;
+     margin: 0 auto;
+     width: 100%;
+}
+ .header {
+     font-size: 25px;
+     display: block;
+     width: 100%;
+     border-bottom: solid 2px #E5E5E5;
+     /*letter-spacing: 0.25px;*/
+     line-height: 60px;
+     text-align: center;
+     font-weight: 700;
+}
+ .container {
+     width: 45%;
+     float: right;
+     overflow: hidden;
+     border-left: 1px solid #E5E5E5;
+     padding-left: 30px;
+}
+ .form {
+     float: left;
+     width: 50%;
+     position: relative;
+     padding-bottom: 10em;
+}
+ .desc {
+     font-size: 17px;
+     color: #9E9E9E;
+}
+ input {
+     width: 105px;
+     margin: 4px 0px 4px 0px;
+     /*border-radius: 5px;*/
+     border: 1px solid #ccc;
+     font-size: 15px;
+     padding: 5px;
+     height: 19px;
+}
+input:focus {
+     border: 1px solid #ffdb4d;
+     box-shadow: inset 0 0 0 1px #ffdb4d;
+}
+
+
+
+select {
+    border-radius: 5px;
+     border: 1px solid #E5E5E5;
+     font-size: 15px;
+     padding: 5px;
+     min-width: 8em;
+}
+
+button {
+     font-family: 'YS Text',Arial,Helvetica,sans-serif;
+     font-feature-settings: 'liga','kern';
+     box-sizing: border-box;
+     font-size: 16px;
+     display: inline-block;
+     width: 105px;
+     padding: 5px;
+     box-shadow: none;
+     border-radius: 0;
+     border: 2px solid #dddddd;
+     cursor: pointer;
+}
+ button.default {
+    background: #ffffff;
+}
+ button.generate {
+    background: #FEDC6A;
+     border: 2px solid #FEDC6A;
+}
+ div.bidder_map:last-of-type {
+     padding-bottom: 15px;
+}
+ hr {
+    color: #E5E5E5;
+     background-color: #E5E5E5;
+     border: 0px none;
+     height: 1px;
+}
+ .delete {
+     font-size: 15px;
+     line-height: 30px;
+     color: #999999;
+     cursor: pointer;
+}
+ .row {
+     float: left;
+     overflow:hidden;
+}
+ .units_row, .bidder_row{
+     border: 1px solid #E5E5E5;
+     padding: 15px;
+}
+ #result_textarea {
+     width: 500px;
+     border: 1px solid #E6EEF2;
+     height: 302px;
+     margin-top: 20px;
+     margin-bottom: 100px;
+}
+
+ .tooltip {
+     border-bottom: 1px dotted #0077AA;
+     cursor: pointer;
+}
+ .tooltip::after {
+     background: #ffffff;
+     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+     color: #000;
+     content: attr(data-tooltip);
+     margin: 44px -116px;
+     width: 14em;
+     opacity: 0;
+     font-size: 15px;
+     padding: 0.5em;
+     position: absolute;
+     visibility: hidden;
+     transition: all 0.5s ease-in-out;
+     font-weight: 100;
+     border-radius: 0px 10px 10px 10px;
+}
+ .tooltip:focus-within::after {
+     opacity: 1;
+     visibility: visible;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+}
+ 
