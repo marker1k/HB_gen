@@ -1,43 +1,99 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Генератор конфигурационного скрипта Header Bidding</title>
-	<link rel="stylesheet" href="style.css">
-	<script src="conf.js"></script>
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/codemirror.js"></script>
+    <script src="mode/xml/xml.js"></script>
+    <script src="mode/javascript/javascript.js"></script>
+    <script src="mode/css/css.js"></script>
+    <script src="mode/vbscript/vbscript.js"></script>
+    <script src="mode/htmlmixed/htmlmixed.js"></script>
+    <script src="clipboard.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Генератор конфигурационного скрипта Header Bidding</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="conf.js"></script>
+    <style type="text/css">
+    .CodeMirror {
+        font-family: Monaco, Consolas, Courier New, monospace;
+        font-size: 13px;
+    }
+    </style>
 </head>
 
 <body>
-	<div class="header">Генератор конфигурационного скрипта для Header Bidding</div>
-	<div class="form">
-		<div id="biddersMap">
-			<h3>Учаcтники торгов  <span class="desc">(Bidders Map)</span></h3>
-			<div id="biddersMapInner"></div>
-			<button id="addBiddersMapUiElement" onclick="addBiddersMapUiElement();">Добавить</button>
-		</div>
-		<br>
-		<hr>
-		<div id="adUnits">
-			<h3>Рекламные блоки <span class="desc">(Ad Units)</span></h3>
-			<div id="adUnitsInner"></div>
-			<button id="addAdUnitsUiElement" onclick="addAdUnitsUiElement();createBiddersInUseArray();">Добавить</button>
-		</div>
-		<br>
-		<hr>
-		<h3>Время ответа <span class="desc">(User timeout)</span></h3>
-		<p style="font-size: 15px;color: gray;">Время ожидания ответа от сервера покупателя, рекомендуемое время 500 мс (максимально возможное 3000 мс, но в таком случае скорость загрузки основного контента сайта будет производится с задержкой.</p>
-		<input id="userTimeout" placeholder="500"> </div>
-	<div class="container">
-		<div id="result">
-			<h3>Скрипт</h3>
-			<button class="generate" onclick="makeInstall();">Генерация</button>
-			<br>
-			<textarea id="result_textarea" disabled="disabled"></textarea>
-		</div>
-	</div>
-	<style>
+    <div class="header">Генератор конфигурационного скрипта для Header Bidding</div>
+    <div class="form">
+        <div id="biddersMap">
+            <h3>Учаcтники торгов  <span class="desc">(Bidders Map)</span></h3>
+            <div id="biddersMapInner"></div>
+            <button id="addBiddersMapUiElement" onclick="addBiddersMapUiElement();">Добавить</button>
+        </div>
+        <br>
+        <hr>
+        <div id="adUnits">
+            <h3>Рекламные блоки <span class="desc">(Ad Units)</span></h3>
+            <div id="adUnitsInner"></div>
+            <button id="addAdUnitsUiElement" onclick="addAdUnitsUiElement();createBiddersInUseArray();">Добавить</button>
+        </div>
+        <br>
+        <hr>
+        <h3>Время ответа <span class="desc">(User timeout)</span></h3>
+        <p style="font-size: 15px;color: gray;">Время ожидания ответа от сервера покупателя, рекомендуемое время 500 мс (максимально возможное 3000 мс, но в таком случае скорость загрузки основного контента сайта будет производится с задержкой.</p>
+        <input id="userTimeout" placeholder="500"> </div>
+    <div class="container">
+        <div id="result">
+            <h3>Скрипт</h3>
+            <button class="generate" onclick="makeInstall();highlightCode();">Генерация</button>
+            <button class="copyToClipboard">Copy</button>
+            <br>
+            <form>
+                <textarea id="result_textarea" disabled="disabled"></textarea>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+    function highlightCode() {
+        var mixedMode = {
+            name: "htmlmixed"
+        };
+        var editor = CodeMirror.fromTextArea(document.getElementById("result_textarea"), {
+            mode: mixedMode,
+            // lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true
+        });
+    }
+    </script>
+    <script type="text/javascript">
+    var editorSelector = '#result_textarea';
+    new ClipboardJS('.copyToClipboard', {
+        text: function(trigger) {
+            return getCodeMirrorNative(editorSelector).getDoc().getValue();
+        }
+    });
 
-	</style>
+    function getCodeMirrorNative(target) {
+        var _target = target;
+        if (typeof _target === 'string') {
+            _target = document.querySelector(_target);
+        }
+        if (_target === null || !_target.tagName === undefined) {
+            throw new Error('Element does not reference a CodeMirror instance.');
+        }
+
+        if (_target.className.indexOf('CodeMirror') > -1) {
+            return _target.CodeMirror;
+        }
+
+        if (_target.tagName === 'TEXTAREA') {
+            return _target.nextSibling.CodeMirror;
+        }
+
+        return null;
+    };
+    </script>
 </body>
 
 </html>
