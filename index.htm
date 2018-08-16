@@ -21,27 +21,27 @@
     <div id="mainError">ERROR</div>
     <div class="form">
         <div id="biddersMap">
-            <h3>Bidders Map</span></h3>
+            <h3>Bidders Map</h3>
             <div id="biddersMapInner"></div>
-            <button id="addBiddersMapUiElement" onclick="addBiddersMapUiElement(this);">Добавить</button>
+            <button id="addBiddersMapUiElement" onclick="biddersMap.addBiddersMapUiElement(this);">Добавить</button>
         </div>
         <br>
         <hr>
         <div id="adUnits">
-            <h3>Ad Units</span></h3>
+            <h3>Ad Units</h3>
             <div id="adUnitsInner"></div>
-            <button id="addAdUnitsUiElement" onclick="addAdUnitsUiElement();createBiddersInUseArray();">Добавить</button>
+            <button id="addAdUnitsUiElement" onclick="AdUnits.addAdUnitsUiElement(this);">Добавить</button>
         </div>
         <br>
         <hr>
-        <h3>User Timeout</span></h3>
+        <h3>User Timeout</h3>
         <p style="font-size: 15px">Время ожидания ответа от сервера покупателя, рекомендуемое время 500 мс (максимально возможное 3000 мс)</p>
         <input id="userTimeout" placeholder="500" value="500">
     </div>
     <div class="container">
         <div id="result">
             <h3>Result</h3>
-            <button class="generate" onclick="">Генерация</button>
+            <button class="generate" id="generate" onclick="">Генерация</button>
             <button class="copyToClipboard">Copy</button>
             <span class="error" id="generateError">Заполните все поля</span>
             <br>
@@ -53,7 +53,7 @@
     <script type="text/javascript">
 
     document.querySelector(".generate").addEventListener("click", function() {
-        makeInstall();
+        main.makeInstall();
     }, false)
     </script>
     <script type="text/javascript">
@@ -63,6 +63,26 @@
             return getCodeMirrorNative(editorSelector).getDoc().getValue();
         }
     });
+    function getCodeMirrorNative(target) {
+      var _target = target;
+      if (typeof _target === 'string') {
+        _target = document.querySelector(_target);
+      }
+      if (_target === null || !_target.tagName === undefined) {
+        throw new Error('Element does not reference a CodeMirror instance.');
+      }
+
+      if (_target.className.indexOf('CodeMirror') > -1) {
+        return _target.CodeMirror;
+      }
+
+      if (_target.tagName === 'TEXTAREA') {
+        return _target.nextSibling.CodeMirror;
+      }
+
+      return null;
+    };
+    document.getElementById("generate").disabled = true;
     </script>
 </body>
 
