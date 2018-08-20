@@ -176,6 +176,9 @@ var AdUnits = {
       if (/\[(.*\S.*)\]/.test(elem.value)) {
         AdUnits.adUnitsUsed[index].sizes = JSON.parse("[" + elem.value + "]");
         elem.parentNode.parentNode.getElementsByTagName("button")[0].disabled = false;
+        if (document.getElementById("adUnitError").style.visibility == "visible") {
+          document.getElementById("adUnitError").style.visibility = "hidden";
+        }
       } else {
         document.getElementById("adUnitError").innerHTML = "Должен быть не пустой массив";
         document.getElementById("adUnitError").style.visibility = "visible";
@@ -198,9 +201,9 @@ var AdUnits = {
         });
       });
       if (found == undefined) {
-        if (document.getElementById("adUnitError").style.visibility == "visible") {
-          document.getElementById("adUnitError").style.visibility = "hidden";
-        }
+        // if (document.getElementById("adUnitError").style.visibility == "visible") {
+        //   document.getElementById("adUnitError").style.visibility = "hidden";
+        // }
         var bidderExists = main.search(AdUnits.adUnitsUsed[index].bids, bidder, "bidder");
         if (bidderExists != undefined) {
           var position = AdUnits.adUnitsUsed[index].bids.indexOf(bidderExists);
