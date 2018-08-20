@@ -183,8 +183,6 @@ var AdUnits = {
     }, 200);
   },
   updateBidderElement: function(elem) {
-    clearTimeout(this.bidderElementTimeout);
-    this.bidderElementTimeout = setTimeout(function() {
       var index = main.getPreviousSiblings(elem.parentNode.parentNode.parentNode.parentNode.parentNode).length;
       var bidder = elem.parentNode.parentNode.getElementsByClassName("bidder")[0].value;
       var id = elem.value;
@@ -199,7 +197,7 @@ var AdUnits = {
           return bid.bidder === bidder && bid.params.placementId === id;
         });
       });
-      if (found === undefined) {
+      if (found == undefined) {
         if (document.getElementById("adUnitError").style.visibility == "visible") {
           document.getElementById("adUnitError").style.visibility = "hidden";
         }
@@ -245,7 +243,6 @@ var AdUnits = {
         document.getElementById("adUnitError").innerHTML = bidder + " уже использует такой placementId";
         document.getElementById("adUnitError").style.visibility = "visible";
       }
-    }, 200);
   },
   addBidder: function(elem) {
     if (document.getElementById("generate").disabled == true) {
@@ -262,7 +259,7 @@ var AdUnits = {
         bidder_element_inner = '<div class="bidder_row"> <select class="bidder"></select>' +
           '<div class = "tooltip placementIdTooltip">' +
           '<span class="error tooltiptext">Placement ID получается на стороне биддера</span>' +
-          '<input class="placementId" placeholder="Placement ID" onfocus="AdUnits.addSizes(this);" onkeyup="AdUnits.updateBidderElement(this);">' +
+          '<input class="placementId" placeholder="Placement ID" onfocus="AdUnits.addSizes(this);" oninput="AdUnits.updateBidderElement(this);">' +
           '</div>' +
           '<div class="delete placementDelete" onclick="AdUnits.removeBidder(this);this.parentNode.remove();"></div>';
         bidder_element.innerHTML = bidder_element_inner;
