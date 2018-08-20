@@ -294,6 +294,21 @@ button.generate:hover {
     position: fixed;
     z-index: 1;
 }
+#timeoutError {
+  visibility: hidden;
+  width: 120px;
+  background-color: red;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  right: 10%;
+  opacity: 0.9;
+  display: inline-block;
+  /* Position the tooltip */
+  /* position: fixed; */
+  z-index: 1;
+}
 
 .sizesTooltip {
     right: -7%;

@@ -13,10 +13,9 @@ var biddersMap = {
   },
   updateBiddersMapUse: function(elem) {
     var campaign_value = elem.parentNode.querySelector(".bidderId");
-    clearTimeout(this.inputTimeout);
-    this.inputTimeout = setTimeout(function() {
-      var campaign = elem.value;
-      var bidder = elem.parentNode.parentNode.querySelector(".bidderName").value;
+    var campaign = elem.value;
+    var bidder = elem.parentNode.parentNode.querySelector(".bidderName").value;
+    if (elem.value != "") {
       if (isNaN(campaign)) {
         document.getElementById("addBiddersMapUiElement").disabled = true;
         campaign_value.classList.add("err");
@@ -25,18 +24,18 @@ var biddersMap = {
         document.getElementById("mainError").style.visibility = "visible";
       } else {
         main.removeFromArray(biddersMap.biddersMapUse, bidder);
-        if (Object.values(biddersMap.campaignIdUsed).indexOf(campaign) === -1) {
+        if (Object.values(biddersMap.campaignIdUsed).indexOf(campaign) == -1) {
           biddersMap.campaignIdUsed[bidder] = campaign;
-          if (document.getElementById("addBiddersMapUiElement").disabled = true) {
+          if (document.getElementById("addBiddersMapUiElement").disabled == true) {
             document.getElementById("addBiddersMapUiElement").disabled = false;
           }
           if (document.getElementsByClassName("err").length > 0) {
             document.getElementsByClassName("err")[0].classList.remove("err");
           }
-          if (document.getElementById("mainError").style.visibility = "visible") {
+          if (document.getElementById("mainError").style.visibility == "visible") {
             document.getElementById("mainError").style.visibility = "hidden";
           }
-        } else if (Object.values(biddersMap.campaignIdUsed).indexOf(campaign) > -1) {
+        } else if (Object.values(biddersMap.campaignIdUsed).indexOf(campaign) != -1) {
           document.getElementById("addBiddersMapUiElement").disabled = true;
           // var campaign_value = elem.parentNode.querySelector(".bidderId");
           campaign_value.classList.add("err");
@@ -45,7 +44,7 @@ var biddersMap = {
           document.getElementById("mainError").style.visibility = "visible";
         }
       }
-    }, 200);
+    }
   },
   addUi: function() {
     if (this.biddersMapUse.length > 0) {
@@ -54,7 +53,7 @@ var biddersMap = {
       map_element.classList.add("bidder_map");
       map_element_inner = '<select class="bidderName"></select>' +
         '<div class="tooltip">' +
-        '<input class="bidderId" type="text" placeholder="ID кампании" onkeyup="biddersMap.updateBiddersMapUse(this)">' +
+        '<input class="bidderId" type="text" placeholder="ID кампании" oninput="biddersMap.updateBiddersMapUse(this);">' +
         '<span class="tooltiptext">ID кампании биддера из интерфейса ADFOX (уникальный)</span>' +
         '<span class="error notUnique">ID кампании должен быть уникальным</span>' +
         '<span class="error">Должно быть заполнено</span>' +
@@ -86,6 +85,7 @@ var biddersMap = {
         document.getElementById("mainError").style.visibility = "hidden";
       }
     }
+    console.log(elem.parentNode);
   }
 };
 
@@ -107,12 +107,11 @@ var AdUnits = {
     }
   },
   updateUnitsUsed: function(elem) {
-    clearTimeout(this.inputTimeout);
-    this.inputTimeout = setTimeout(function() {
-      var index = elem.parentNode.parentNode.id;
+    if (elem.value != "") {
+      var index = main.getPreviousSiblings(elem.parentNode.parentNode.parentNode).length;
       if (main.search(AdUnits.adUnitsUsed, elem.value, "code") == undefined) {
-        AdUnits.adUnitsUsed[index - 1].code = elem.value;
-        AdUnits.adUnitsUsed[index - 1].bids = [];
+        AdUnits.adUnitsUsed[index].code = elem.value;
+        // AdUnits.adUnitsUsed[index].bids = [];
         if (elem.parentNode.parentNode.parentNode.getElementsByTagName("button")[0].disabled == true) {
           elem.parentNode.parentNode.parentNode.getElementsByTagName("button")[0].disabled = false;
           document.getElementById("adUnitError").style.visibility = "hidden";
@@ -122,7 +121,7 @@ var AdUnits = {
         document.getElementById("adUnitError").innerHTML = "ID контейнеров должны быть уникальными";
         document.getElementById("adUnitError").style.visibility = "visible";
       }
-    }, 200);
+    }
   },
   addUi: function(elem) {
     AdUnits.count += 1;
@@ -131,11 +130,11 @@ var AdUnits = {
     var ad_units = document.getElementById("adUnitsInner");
     units_element = document.createElement("P");
     units_element_inner = '<div class="units_row" id=' + AdUnits.count + '>' +
-      // '<div class="delete adUnitDelete" onclick="this.parentNode.remove();document.getElementById(\'addBiddersMapUiElement\').disabled = false;" id="adUnitsCloseButton"></div>' +
+      '<div class="delete adUnitDelete" onclick="AdUnits.removeUnit(this);this.parentNode.parentNode.remove();" id="adUnitsCloseButton"></div>' +
       '<div id="adUnitError">ERROR</div>' +
       '<p style="font-size: 15px;color: gray;">ID контейнера ADFOX:</p>' +
       '<div class="tooltip">' +
-      '<input class="code" placeholder="container ID" onkeyup="AdUnits.updateUnitsUsed(this);">' +
+      '<input class="code" placeholder="container ID" oninput="AdUnits.updateUnitsUsed(this);">' +
       '<span class="tooltiptext adUnitsTooltip">ID контейнера кода вставки ADFOX (уникальный)</span>' +
       '<span class="error adUnitsTooltip">Введите ID контейнера</span>' +
       '</div>' +
@@ -151,6 +150,10 @@ var AdUnits = {
       '</div>';
     units_element.innerHTML = units_element_inner;
     ad_units.insertAdjacentElement("beforeEnd", units_element);
+  },
+  removeUnit: function(elem) {
+    var id = elem.parentNode.id;
+    AdUnits.adUnitsUsed.splice(id - 1, 1);
   },
   addAdUnitsUiElement: function(elem) {
     if (document.getElementsByClassName("bidder_map").length === 0) {
@@ -169,12 +172,12 @@ var AdUnits = {
       if (document.getElementById("adUnitError").style.visibility == "visible") {
         document.getElementById("adUnitError").style.visibility = "hidden";
       }
-      var index = elem.parentNode.parentNode.id;
-      if (/\[(.*)\]/.test(elem.value)) {
-        AdUnits.adUnitsUsed[index - 1].sizes = JSON.parse("[" + elem.value + "]");
+      var index = main.getPreviousSiblings(elem.parentNode.parentNode.parentNode).length;
+      if (/\[(.*\S.*)\]/.test(elem.value)) {
+        AdUnits.adUnitsUsed[index].sizes = JSON.parse("[" + elem.value + "]");
         elem.parentNode.parentNode.getElementsByTagName("button")[0].disabled = false;
       } else {
-        document.getElementById("adUnitError").innerHTML = "Должен быть массив";
+        document.getElementById("adUnitError").innerHTML = "Должен быть не пустой массив";
         document.getElementById("adUnitError").style.visibility = "visible";
       }
     }, 200);
@@ -182,9 +185,12 @@ var AdUnits = {
   updateBidderElement: function(elem) {
     clearTimeout(this.bidderElementTimeout);
     this.bidderElementTimeout = setTimeout(function() {
-      var index = elem.parentNode.parentNode.parentNode.parentNode.id;
+      var index = main.getPreviousSiblings(elem.parentNode.parentNode.parentNode.parentNode.parentNode).length;
       var bidder = elem.parentNode.parentNode.getElementsByClassName("bidder")[0].value;
       var id = elem.value;
+      // if (AdUnits.adUnitsUsed[index].bids == undefined) {
+      //   AdUnits.adUnitsUsed[index].bids = [];
+      // }
       // Тут сначала нужно сделать проверку нет ли уже биддера в adunite main.search(AdUnits.adUnitsUsed[0].bids, 'criteo', 'bidder')
       // И нет ли в другом AdUnit такого id. Тоже через main.search
       // Если есть, то просто обновить значение у него
@@ -197,15 +203,15 @@ var AdUnits = {
         if (document.getElementById("adUnitError").style.visibility == "visible") {
           document.getElementById("adUnitError").style.visibility = "hidden";
         }
-        var bidderExists = main.search(AdUnits.adUnitsUsed[index - 1].bids, bidder, "bidder");
+        var bidderExists = main.search(AdUnits.adUnitsUsed[index].bids, bidder, "bidder");
         if (bidderExists != undefined) {
-          var position = AdUnits.adUnitsUsed[index - 1].bids.indexOf(bidderExists);
-          AdUnits.adUnitsUsed[index - 1].bids[position].params.placementId = id;
+          var position = AdUnits.adUnitsUsed[index].bids.indexOf(bidderExists);
+          AdUnits.adUnitsUsed[index].bids[position].params.placementId = id;
         } else {
           if (bidder == "adriver" || bidder == "betweenDigital") {
             var sizes = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("sizes")[0].value;
             if (sizes == "") {
-              AdUnits.adUnitsUsed[index - 1].bids.push({
+              AdUnits.adUnitsUsed[index].bids.push({
                 bidder: bidder,
                 params: {
                   placementId: id
@@ -215,7 +221,7 @@ var AdUnits = {
               document.getElementById("adUnitError").innerHTML = "Заполните размеры";
               document.getElementById("adUnitError").style.visibility = "visible";
             } else {
-              AdUnits.adUnitsUsed[index - 1].bids.push({
+              AdUnits.adUnitsUsed[index].bids.push({
                 bidder: bidder,
                 sizes: [sizes],
                 params: {
@@ -226,7 +232,7 @@ var AdUnits = {
           } else {
             // AdUnits.bidderState.push({});
             // AdUnits.bidderState[index - 1][bidder] = id;
-            AdUnits.adUnitsUsed[index - 1].bids.push({
+            AdUnits.adUnitsUsed[index].bids.push({
               bidder: bidder,
               params: {
                 placementId: id
@@ -245,7 +251,10 @@ var AdUnits = {
     if (document.getElementById("generate").disabled == true) {
       document.getElementById("generate").disabled = false;
     }
-    var index = elem.parentNode.id;
+    console.log(elem.parentNode.parentNode);
+    console.log(main.getPreviousSiblings(elem.parentNode.parentNode).length);
+    var index = main.getPreviousSiblings(elem.parentNode.parentNode).length;
+    // var index = elem.parentNode.id;
     if (elem.parentNode.getElementsByClassName("bidder").length < Object.keys(biddersMap.campaignIdUsed).length) {
       var code = elem.parentNode.getElementsByClassName("tooltip")[0].getElementsByClassName("code")[0];
       if (code.value !== "") {
@@ -261,7 +270,10 @@ var AdUnits = {
         for (var i = 0; i < Object.keys(biddersMap.campaignIdUsed).length; i++) {
           var option = document.createElement("option");
           option.text = Object.keys(biddersMap.campaignIdUsed)[i];
-          if (typeof(main.search(AdUnits.adUnitsUsed[index - 1].bids, Object.keys(biddersMap.campaignIdUsed)[i], 'bidder')) == "undefined") {
+          if (AdUnits.adUnitsUsed[index].bids == undefined) {
+            AdUnits.adUnitsUsed[index].bids = [];
+          }
+          if (typeof(main.search(AdUnits.adUnitsUsed[index].bids, Object.keys(biddersMap.campaignIdUsed)[i], 'bidder')) == "undefined") {
             x.add(option, x[i]);
           }
         }
@@ -277,15 +289,62 @@ var AdUnits = {
     }
   },
   removeBidder: function(elem) {
-    var index = elem.parentNode.parentNode.parentNode.id;
+    var bidder = elem.parentNode.querySelector(".bidder").value;
+    // var index = elem.parentNode.parentNode.parentNode.id;
+    var index = main.getPreviousSiblings(elem.parentNode.parentNode.parentNode.parentNode).length;
     var bidder = elem.parentNode.getElementsByClassName("bidder")[0].value;
-    var arrIndex = AdUnits.adUnitsUsed[index - 1].bids.indexOf(main.search(AdUnits.adUnitsUsed[index - 1].bids, bidder, 'bidder'))
-    AdUnits.adUnitsUsed[index - 1].bids.splice(arrIndex, 1);
+    var arrIndex = AdUnits.adUnitsUsed[index].bids.indexOf(main.search(AdUnits.adUnitsUsed[index].bids, bidder, 'bidder'))
+    AdUnits.adUnitsUsed[index].bids.splice(arrIndex, 1);
+    if (bidder == "adriver" || bidder == "betweenDigital") {
+      elem.parentNode.parentNode.parentNode.getElementsByClassName("sizes")[0].value = "";
+      elem.parentNode.parentNode.parentNode.getElementsByClassName("sizes")[0].style.display = "none";
+      delete AdUnits.adUnitsUsed[index].sizes;
+    }
   }
 }
 // End AdUnits section
 
+// Begin timeout section
+
+var timeoutInput = {
+  timeout: "500",
+  checkTimeout: function(elem) {
+    var error = document.getElementById("timeoutError");
+    if (isNaN(elem.value)) {
+      error.innerHTML = "Должны быть цифры";
+      error.classList.add("err");
+      error.focus();
+      error.style.visibility = "visible";
+    } else if (elem.value.length > 4 || elem.value > 3000) {
+      error.innerHTML = "Timeout не должен привышать 3000мс";
+      error.classList.add("err");
+      error.focus();
+      error.style.visibility = "visible";
+    } else {
+      if (error.style.visibility == "visible") {
+        error.style.visibility = "hidden";
+      }
+      this.timeout = elem.value;
+    }
+  }
+};
+
+//End of timeout section
+
 var main = {
+  objCount: function(obj) {
+    var count = 0;
+    for (k in obj)
+      if (obj.hasOwnProperty(k)) count++;
+    return count;
+  },
+  getPreviousSiblings: function(el, filter) {
+    var siblings = [];
+    while (el = el.previousSibling) {
+      if (!filter || filter(el)) siblings.push(el);
+    }
+    return siblings;
+  },
   removeFromArray: function(arr) {
     var what, a = arguments,
       L = a.length,
@@ -307,12 +366,15 @@ var main = {
     }
   },
   highlightCode: function() {
+    if (document.getElementsByClassName("CodeMirror").length > 0) {
+      document.getElementsByClassName("CodeMirror")[0].remove();
+    }
     var mixedMode = {
       name: "htmlmixed"
     };
     var editor = CodeMirror.fromTextArea(document.getElementById("result_textarea"), {
       mode: mixedMode,
-      // lineNumbers: true,
+      lineNumbers: true,
       styleActiveLine: true,
       matchBrackets: true,
       readOnly: true
@@ -322,7 +384,7 @@ var main = {
     return 'const adfoxBiddersMap = ' + JSON.stringify(biddersMap.campaignIdUsed, null, 4) + ';';
   },
   makeInstall: function() {
-    var tail = 'var userTimeout = ' + document.getElementById("userTimeout").value + ';' + '\n' +
+    var tail = 'var userTimeout = ' + timeoutInput.timeout + ';' + '\n' +
       'window.YaHeaderBiddingSettings = {' + '\n' +
       '    biddersMap: adfoxBiddersMap,' + '\n' +
       '    adUnits: adUnits,' + '\n' +
@@ -334,6 +396,6 @@ var main = {
     document.getElementById('result_textarea').value += '\n' + 'var adUnits = ' + JSON.stringify(AdUnits.adUnitsUsed, null, 4) + ';' + '\n' + tail;
     document.getElementById('result_textarea').value += '\n' + loader;
     main.highlightCode();
-    document.getElementById("generate").disabled = true;
+    // document.getElementById("generate").disabled = true;
   }
 };

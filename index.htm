@@ -36,7 +36,10 @@
         <hr>
         <h3>User Timeout</h3>
         <p style="font-size: 15px">Время ожидания ответа от сервера покупателя, рекомендуемое время 500 мс (максимально возможное 3000 мс)</p>
-        <input id="userTimeout" placeholder="500" value="500">
+        <input id="userTimeout" placeholder="500" value="500" oninput="timeoutInput.checkTimeout(this);">
+        <div class="" id="timeoutError">
+            sdsdfsdf
+        </div>
     </div>
     <div class="container">
         <div id="result">
