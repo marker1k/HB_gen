@@ -2,70 +2,67 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="lib/codemirror.css">
-    <script src="lib/codemirror.js"></script>
-    <script src="mode/xml/xml.js"></script>
-    <script src="mode/javascript/javascript.js"></script>
-    <script src="mode/css/css.js"></script>
-    <script src="mode/vbscript/vbscript.js"></script>
-    <script src="mode/htmlmixed/htmlmixed.js"></script>
-    <script src="clipboard.js"></script>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Yandex HB Config Generator</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="conf.js"></script>
+  <link rel="stylesheet" href="lib/codemirror.css">
+  <script src="lib/codemirror.js"></script>
+  <script src="mode/xml/xml.js"></script>
+  <script src="mode/javascript/javascript.js"></script>
+  <script src="mode/css/css.js"></script>
+  <script src="mode/vbscript/vbscript.js"></script>
+  <script src="mode/htmlmixed/htmlmixed.js"></script>
+  <script src="clipboard.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Yandex HB Config Generator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="conf.js"></script>
 </head>
 
 <body>
-    <div class="header">Header Bidding Config</div>
-    <div id="mainError">ERROR</div>
-    <div class="form">
-        <div id="biddersMap">
-            <h3>Bidders Map</h3>
-            <div id="biddersMapInner"></div>
-            <button id="addBiddersMapUiElement" onclick="biddersMap.addBiddersMapUiElement(this);">Добавить</button>
-        </div>
-        <br>
-        <hr>
-        <div id="adUnits">
-            <h3>Ad Units</h3>
-            <div id="adUnitsInner"></div>
-            <button id="addAdUnitsUiElement" onclick="AdUnits.addAdUnitsUiElement(this);">Добавить</button>
-        </div>
-        <br>
-        <hr>
-        <h3>User Timeout</h3>
-        <p style="font-size: 15px">Время ожидания ответа от сервера покупателя, рекомендуемое время 500 мс (максимально возможное 3000 мс)</p>
-        <input id="userTimeout" placeholder="500" value="500" oninput="timeoutInput.checkTimeout(this);">
-        <div class="" id="timeoutError">
-            sdsdfsdf
-        </div>
+  <div class="header">Header Bidding Config</div>
+  <div id="mainError">ERROR</div>
+  <div class="form">
+    <div id="biddersMap">
+      <h3>Bidders Map</h3>
+      <div id="biddersMapInner"></div>
+      <button id="addBiddersMapUiElement" onclick="biddersMap.addBiddersMapUiElement(this);">Добавить</button>
     </div>
-    <div class="container">
-        <div id="result">
-            <h3>Result</h3>
-            <button class="generate" id="generate" onclick="">Генерация</button>
-            <button class="copyToClipboard">Copy</button>
-            <span class="error" id="generateError">Заполните все поля</span>
-            <br>
-            <form>
-                <textarea id="result_textarea" disabled="disabled"></textarea>
-            </form>
-        </div>
+    <br>
+    <hr>
+    <div id="adUnits">
+      <h3>Ad Units</h3>
+      <div id="adUnitsInner"></div>
+      <button id="addAdUnitsUiElement" onclick="AdUnits.addAdUnitsUiElement(this);">Добавить</button>
+      <button style="margin-left: 235px;" class="generate" onclick="">Генерация</button>
     </div>
-    <script type="text/javascript">
+    <br>
+    <hr>
+    <h3>User Timeout</h3>
+    <p style="font-size: 15px">Время ожидания ответа от сервера покупателя, рекомендуемое время 500 мс (максимально возможное 3000 мс)</p>
+    <input id="userTimeout" placeholder="500" value="500" oninput="timeoutInput.checkTimeout(this);">
+    <div class="" id="timeoutError">
+      sdsdfsdf
+    </div>
+  </div>
+  <div class="container">
+    <div id="result">
+      <h3>Result</h3>
+      <button class="generate" id="generate" onclick="">Генерация</button>
+      <button class="copyToClipboard">Copy</button>
+      <span class="error" id="generateError">Заполните все поля</span>
+      <br>
+      <form>
+        <textarea id="result_textarea" disabled="disabled"></textarea>
+      </form>
+    </div>
+  </div>
 
-    document.querySelector(".generate").addEventListener("click", function() {
-        main.makeInstall();
-    }, false)
-    </script>
-    <script type="text/javascript">
+  <script type="text/javascript">
     var editorSelector = '#result_textarea';
     new ClipboardJS('.copyToClipboard', {
-        text: function(trigger) {
-            return getCodeMirrorNative(editorSelector).getDoc().getValue();
-        }
+      text: function(trigger) {
+        return getCodeMirrorNative(editorSelector).getDoc().getValue();
+      }
     });
+
     function getCodeMirrorNative(target) {
       var _target = target;
       if (typeof _target === 'string') {
@@ -85,8 +82,14 @@
 
       return null;
     };
-    document.getElementById("generate").disabled = true;
-    </script>
+    var generateButtons = document.getElementsByClassName("generate");
+    for (var i = 0; i < generateButtons.length; i += 1) {
+      generateButtons[i].addEventListener('click', function() {
+        main.makeInstall();
+      });
+      generateButtons[i].disabled = true;
+    }
+  </script>
 </body>
 
 </html>

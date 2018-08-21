@@ -330,3 +330,7 @@ button.generate:hover {
 .err {
     background: red;
   }
+
+.bidder_row {
+  box-shadow: 0 0 0px rgba(0, 0, 0, .13142857142857142), 0 2.4px 11px rgba(0, 0, 0, .16428571428571428);
+}

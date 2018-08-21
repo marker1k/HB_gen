@@ -12,6 +12,7 @@ var biddersMap = {
     delete biddersMap.campaignIdUsed[bidder];
   },
   updateBiddersMapUse: function(elem) {
+    elem.parentNode.parentNode.querySelector(".bidderName").disabled = true;
     var campaign_value = elem.parentNode.querySelector(".bidderId");
     var campaign = elem.value;
     var bidder = elem.parentNode.parentNode.querySelector(".bidderName").value;
@@ -139,7 +140,7 @@ var AdUnits = {
       '<span class="error adUnitsTooltip">Введите ID контейнера</span>' +
       '</div>' +
       '<div class="tooltip">' +
-      '<span class="tooltiptext sizesTooltip">Массив массивов: [[Ш,В],[Ш,В]]</span>' +
+      '<span class="tooltiptext sizesTooltip">Массив массивов:<br>[Ш,В]<br>или<br>[[Ш,В],[Ш,В]]</span>' +
       '<input class="sizes" placeholder="Размеры" style="display: none;" onkeyup="AdUnits.updateSizes(this)">' +
       '<span class="error required">Размеры обязательны для блока с AdRiver или betweenDigital</span>' +
       '</div> ' +
@@ -186,6 +187,7 @@ var AdUnits = {
     }, 200);
   },
   updateBidderElement: function(elem) {
+      elem.parentNode.parentNode.getElementsByClassName("bidder")[0].disabled = true;
       var index = main.getPreviousSiblings(elem.parentNode.parentNode.parentNode.parentNode.parentNode).length;
       var bidder = elem.parentNode.parentNode.getElementsByClassName("bidder")[0].value;
       var id = elem.value;
@@ -201,11 +203,14 @@ var AdUnits = {
         });
       });
       if (found == undefined) {
-        // if (document.getElementById("adUnitError").style.visibility == "visible") {
-        //   document.getElementById("adUnitError").style.visibility = "hidden";
-        // }
         var bidderExists = main.search(AdUnits.adUnitsUsed[index].bids, bidder, "bidder");
         if (bidderExists != undefined) {
+          if (document.getElementById("adUnitError").style.visibility == "visible") {
+            document.getElementById("adUnitError").style.visibility = "hidden";
+            for (var i = 0; i < generateButtons.length; i += 1) {
+              generateButtons[i].disabled = false;
+            }
+          }
           var position = AdUnits.adUnitsUsed[index].bids.indexOf(bidderExists);
           AdUnits.adUnitsUsed[index].bids[position].params.placementId = id;
         } else {
@@ -231,6 +236,9 @@ var AdUnits = {
               });
             }
           } else {
+            // if (document.getElementById("adUnitError").style.visibility == "visible") {
+            //   document.getElementById("adUnitError").style.visibility = "hidden";
+            // }
             // AdUnits.bidderState.push({});
             // AdUnits.bidderState[index - 1][bidder] = id;
             AdUnits.adUnitsUsed[index].bids.push({
@@ -245,11 +253,17 @@ var AdUnits = {
       } else {
         document.getElementById("adUnitError").innerHTML = bidder + " уже использует такой placementId";
         document.getElementById("adUnitError").style.visibility = "visible";
+        for (var i = 0; i < generateButtons.length; i += 1) {
+          generateButtons[i].disabled = true;
+        }
       }
+      elem.parentNode.parentNode.getElementsByClassName("bidder")[0] = true;
   },
   addBidder: function(elem) {
-    if (document.getElementById("generate").disabled == true) {
-      document.getElementById("generate").disabled = false;
+    if (generateButtons[0].disabled && generateButtons[1].disabled) {
+      for (var i = 0; i < generateButtons.length; i+=1) {
+        generateButtons[i].disabled = false;
+      }
     }
     console.log(elem.parentNode.parentNode);
     console.log(main.getPreviousSiblings(elem.parentNode.parentNode).length);
