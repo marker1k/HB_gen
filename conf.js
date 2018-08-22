@@ -251,6 +251,7 @@ var AdUnits = {
           }
         }
       } else {
+        console.log(elem.parentNode.parentNode.getElementsBy);
         document.getElementById("adUnitError").innerHTML = bidder + " уже использует такой placementId";
         document.getElementById("adUnitError").style.visibility = "visible";
         for (var i = 0; i < generateButtons.length; i += 1) {
@@ -326,17 +327,20 @@ var timeoutInput = {
     var error = document.getElementById("timeoutError");
     if (isNaN(elem.value)) {
       error.innerHTML = "Должны быть цифры";
-      error.classList.add("err");
-      error.focus();
+      elem.classList.add("err");
+      elem.focus();
       error.style.visibility = "visible";
     } else if (elem.value.length > 4 || elem.value > 3000) {
       error.innerHTML = "Timeout не должен привышать 3000мс";
-      error.classList.add("err");
-      error.focus();
+      elem.classList.add("err");
+      elem.focus();
       error.style.visibility = "visible";
     } else {
       if (error.style.visibility == "visible") {
         error.style.visibility = "hidden";
+      }
+      if (elem.classList.contains("err")) {
+        elem.classList.remove("err");
       }
       this.timeout = elem.value;
     }
@@ -378,6 +382,14 @@ var main = {
         return array[i];
       }
     }
+  },
+  showSuccess: function() {
+    document.getElementById("adUnitError").innerHTML = "Код скопирован в буфер обмена";
+    document.getElementById("adUnitError").style.backgroundColor = "green";
+    document.getElementById("adUnitError").style.visibility = "visible";
+    setTimeout(function(){
+      document.getElementById("adUnitError").style.visibility = "hidden";
+    }, 1500)
   },
   highlightCode: function() {
     if (document.getElementsByClassName("CodeMirror").length > 0) {

@@ -277,26 +277,13 @@ button.generate:hover {
     position: absolute;
     z-index: 1;
 }
-#adUnitError {
-    left: 30%;
-    top: 27%;
-    visibility: hidden;
-    width: 120px;
-    background-color: red;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    right: 10%;
-    opacity: 0.9;
-
-    /* Position the tooltip */
-    position: fixed;
-    z-index: 1;
-}
-#timeoutError {
+#adUnitError, #timeoutError {
+  left: 30%;
+  bottom: 30px;
+  left: 30px;
   visibility: hidden;
-  width: 120px;
+  width: 350px;
+  height: 30px;
   background-color: red;
   color: #fff;
   text-align: center;
@@ -304,11 +291,11 @@ button.generate:hover {
   padding: 5px 0;
   right: 10%;
   opacity: 0.9;
-  display: inline-block;
-  /* Position the tooltip */
-  /* position: fixed; */
+  position: fixed;
   z-index: 1;
+  box-shadow: 0 0 0px rgba(0, 0, 0, .13142857142857142), 0 2.4px 11px rgba(0, 0, 0, .16428571428571428);
 }
+
 
 .sizesTooltip {
     right: -7%;

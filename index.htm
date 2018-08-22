@@ -46,7 +46,7 @@
     <div id="result">
       <h3>Result</h3>
       <button class="generate" id="generate" onclick="">Генерация</button>
-      <button class="copyToClipboard">Copy</button>
+      <button class="copyToClipboard" onclick="mainshowSuccess()">Copy</button>
       <span class="error" id="generateError">Заполните все поля</span>
       <br>
       <form>
@@ -54,7 +54,7 @@
       </form>
     </div>
   </div>
-
+  <div id="timeoutError">ID контейнеров должны быть уникальными</div>
   <script type="text/javascript">
     var editorSelector = '#result_textarea';
     new ClipboardJS('.copyToClipboard', {
