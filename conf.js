@@ -143,7 +143,7 @@ var AdUnits = {
     units_element_inner = '<div class="units_row">' +
       '<div class="delete adUnitDelete" onclick="AdUnits.removeUnit(this);this.parentNode.parentNode.remove();" id="adUnitsCloseButton"></div>' +
       '<div id="adUnitError">ERROR</div>' +
-      '<p style="font-size: 15px;color: gray;">ID контейнера ADFOX:</p>' +
+      '<p style="font-size: 15px;">ID контейнера ADFOX:</p>' +
       '<div class="tooltip">' +
       '<input class="code" placeholder="container ID" oninput="AdUnits.updateUnitsUsed(this);">' +
       '<span class="tooltiptext adUnitsTooltip">ID контейнера кода вставки ADFOX (уникальный)</span>' +
@@ -156,7 +156,7 @@ var AdUnits = {
       '</div> ' +
       '  <br> <div class="units_bidder"> ' +
       '</div> ' +
-      '<p style="font-size: 15px;color: gray;">Биддеры и их placement id:</p>' +
+      '<p style="font-size: 15px;">Биддеры и их placement id:</p>' +
       '<button class="default" id="addBidder" onclick="AdUnits.addBidder(this);">Добавить</button>' +
       '</div>';
     units_element.innerHTML = units_element_inner;
