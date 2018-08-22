@@ -277,7 +277,7 @@ button.generate:hover {
     position: absolute;
     z-index: 1;
 }
-#adUnitError, #timeoutError, #sizesError, #generateError, #sameContainer, #fillAdUnits, #wrongLetters {
+#adUnitError, #timeoutError, #sizesError, #generateError, #sameContainer, #fillAdUnits, #wrongLetters, #emptyBidder {
   left: 30%;
   bottom: 30px;
   left: 30px;

@@ -493,29 +493,47 @@ var main = {
   },
   makeInstall: function() {
     var bidders = [];
+    var check = true;
     AdUnits.adUnitsUsed.forEach(function(element) {
-      element.bids.forEach(function(item) {
-        if (bidders.indexOf(item.bidder) == -1) {
-          if (!(item.bidder in biddersMap.campaignIdUsed)) {
-            bidders.push(item.bidder);
-          }
-        }
-      });
-    });
-    if (bidders.length == 0) {
-      if (Object.keys(biddersMap.campaignIdUsed).length === 0 && biddersMap.campaignIdUsed.constructor === Object) {
-        document.getElementById("generateError").innerHTML = "Заполните Bidders Map";
-        document.getElementById("generateError").style.visibility = "visible";
-      } else if (AdUnits.adUnitsUsed.length == 0) {
-        document.getElementById("fillAdUnits").innerHTML = "Заполните Ad Units";
-        document.getElementById("fillAdUnits").style.visibility = "visible";
-      } else {
-        main.make();
+      if (Object.keys(element).length === 0 && element.constructor === Object) {
+        document.getElementById("emptyBidder").innerHTML = "Заполните все поля";
+        document.getElementById("emptyBidder").style.visibility = "visible";
+        check = false;
       }
-    } else {
-      document.getElementById("generateError").innerHTML = "В Bidders Map не добавлены ID кампаний для " + JSON.stringify(bidders).slice(2, -2);;
-      document.getElementById("generateError").style.visibility = "visible";
+
+    });
+    if (check) {
+      if (document.getElementById("emptyBidder").style.visibility == "visible") {
+        document.getElementById("emptyBidder").style.visibility = "hidden";
+      }
+      AdUnits.adUnitsUsed.forEach(function(element) {
+        element.bids.forEach(function(item) {
+          if (bidders.indexOf(item.bidder) == -1) {
+            if (!(item.bidder in biddersMap.campaignIdUsed)) {
+              bidders.push(item.bidder);
+            }
+          }
+        });
+      });
+
+
+      if (bidders.length == 0) {
+        if (Object.keys(biddersMap.campaignIdUsed).length === 0 && biddersMap.campaignIdUsed.constructor === Object) {
+          document.getElementById("generateError").innerHTML = "Заполните Bidders Map";
+          document.getElementById("generateError").style.visibility = "visible";
+        } else if (AdUnits.adUnitsUsed.length == 0) {
+          document.getElementById("fillAdUnits").innerHTML = "Заполните Ad Units";
+          document.getElementById("fillAdUnits").style.visibility = "visible";
+        } else {
+          main.make();
+        }
+      } else {
+        document.getElementById("generateError").innerHTML = "В Bidders Map не добавлены ID кампаний для " + JSON.stringify(bidders).slice(2, -2);;
+        document.getElementById("generateError").style.visibility = "visible";
+      }
     }
+
+
 
   }
 };
