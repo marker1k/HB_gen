@@ -277,7 +277,7 @@ button.generate:hover {
     position: absolute;
     z-index: 1;
 }
-#adUnitError, #timeoutError {
+#adUnitError, #timeoutError, #sizesError, #generateError, #sameContainer, #fillAdUnits {
   left: 30%;
   bottom: 30px;
   left: 30px;
@@ -306,10 +306,10 @@ button.generate:hover {
     margin-left: 15px;
 }
 
-#generateError {
+/* #generateError {
     position: absolute;
     left: 60%;
-}
+} */
 
 .placementId {
     margin-left: 15px;
@@ -320,4 +320,11 @@ button.generate:hover {
 
 .bidder_row {
   box-shadow: 0 0 0px rgba(0, 0, 0, .13142857142857142), 0 2.4px 11px rgba(0, 0, 0, .16428571428571428);
+}
+#as {
+  width: 20px;
+margin: 10px;
+font-size: 15px;
+padding: 5px;
+height: 19px;
 }
