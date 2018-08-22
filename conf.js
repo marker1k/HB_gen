@@ -89,7 +89,6 @@ var biddersMap = {
         document.getElementById("mainError").style.visibility = "hidden";
       }
     }
-    console.log(elem.parentNode);
   }
 };
 
@@ -208,12 +207,6 @@ var AdUnits = {
     var index = main.getPreviousSiblings(elem.parentNode.parentNode.parentNode.parentNode.parentNode).length;
     var bidder = elem.parentNode.parentNode.getElementsByClassName("bidder")[0].value;
     var id = elem.value;
-    // if (AdUnits.adUnitsUsed[index].bids == undefined) {
-    //   AdUnits.adUnitsUsed[index].bids = [];
-    // }
-    // Тут сначала нужно сделать проверку нет ли уже биддера в adunite main.search(AdUnits.adUnitsUsed[0].bids, 'criteo', 'bidder')
-    // И нет ли в другом AdUnit такого id. Тоже через main.search
-    // Если есть, то просто обновить значение у него
     var found = AdUnits.adUnitsUsed.find(function(code) {
       return code.bids.some(function(bid) {
         return bid.bidder === bidder && bid.params.placementId === id;
@@ -229,7 +222,22 @@ var AdUnits = {
           }
         }
         var position = AdUnits.adUnitsUsed[index].bids.indexOf(bidderExists);
-        AdUnits.adUnitsUsed[index].bids[position].params.placementId = id;
+        if (main.alphanumeric.test(id)) {
+          if (document.getElementById("wrongLetters").style.visibility == "visible") {
+            document.getElementById("wrongLetters").style.visibility = "hidden";
+          }
+          for (var i = 0; i < generateButtons.length; i += 1) {
+            generateButtons[i].disabled = false;
+          }
+          AdUnits.adUnitsUsed[index].bids[position].params.placementId = id;
+        } else {
+          document.getElementById("wrongLetters").innerHTML = "Неподдерживаемые символы в placementId " + bidder;
+          document.getElementById("wrongLetters").style.visibility = "visible";
+          for (var i = 0; i < generateButtons.length; i += 1) {
+            generateButtons[i].disabled = true;
+          }
+        }
+
       } else {
         if (bidder == "adriver" || bidder == "betweenDigital") {
           var sizes = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("sizes")[0].value;
@@ -243,8 +251,17 @@ var AdUnits = {
             elem.parentNode.parentNode.parentNode.parentNode.getElementsByTagName("button")[0].disabled = true;
             document.getElementById("sizesError").innerHTML = "Заполните размеры";
             document.getElementById("sizesError").style.visibility = "visible";
+            for (var i = 0; i < generateButtons.length; i += 1) {
+              generateButtons[i].disabled = true;
+            }
           } else {
-            if (main.alphanumeric(id)) {
+            if (main.alphanumeric.test(id)) {
+              if (document.getElementById("wrongLetters").style.visibility == "visible") {
+                document.getElementById("wrongLetters").style.visibility = "hidden";
+              }
+              for (var i = 0; i < generateButtons.length; i += 1) {
+                generateButtons[i].disabled = false;
+              }
               AdUnits.adUnitsUsed[index].bids.push({
                 bidder: bidder,
                 sizes: [sizes],
@@ -253,7 +270,11 @@ var AdUnits = {
                 }
               });
             } else {
-              console.log("Wrong letters");
+              document.getElementById("wrongLetters").innerHTML = "Неподдерживаемые символы в placementId " + bidder;
+              document.getElementById("wrongLetters").style.visibility = "visible";
+              for (var i = 0; i < generateButtons.length; i += 1) {
+                generateButtons[i].disabled = true;
+              }
             }
           }
         } else {
@@ -262,15 +283,25 @@ var AdUnits = {
           // }
           // AdUnits.bidderState.push({});
           // AdUnits.bidderState[index - 1][bidder] = id;
-          if (main.alphanumeric(id) == false) {
-            console.log("Wrong letters");
-          } else {
+          if (main.alphanumeric.test(id)) {
+            if (document.getElementById("wrongLetters").style.visibility == "visible") {
+              document.getElementById("wrongLetters").style.visibility = "hidden";
+            }
+            for (var i = 0; i < generateButtons.length; i += 1) {
+              generateButtons[i].disabled = false;
+            }
             AdUnits.adUnitsUsed[index].bids.push({
               bidder: bidder,
               params: {
                 placementId: id
               }
             });
+          } else {
+            document.getElementById("wrongLetters").innerHTML = "Неподдерживаемые символы в placementId " + bidder;
+            document.getElementById("wrongLetters").style.visibility = "visible";
+            for (var i = 0; i < generateButtons.length; i += 1) {
+              generateButtons[i].disabled = true;
+            }
           }
 
         }
@@ -422,14 +453,7 @@ var main = {
       document.getElementById("timeoutError").style.visibility = "hidden";
     }, 1500)
   },
-  alphanumeric: function(inputtxt) {
-    var letterNumber = /^[0-9a-zA-Z]+$/;
-    if (inputtxt.match(letterNumber)) {
-      return true;
-    } else {
-      return false;
-    }
-  },
+  alphanumeric: /^[0-9a-zA-Z]+$/,
   highlightCode: function() {
     if (document.getElementsByClassName("CodeMirror").length > 0) {
       document.getElementsByClassName("CodeMirror")[0].remove();
