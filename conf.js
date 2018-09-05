@@ -58,7 +58,7 @@ var biddersMap = {
       map_element_inner = '<select class="bidderName"></select>' +
         '<div class="tooltip">' +
         '<input class="bidderId" type="text" placeholder="ID кампании" oninput="biddersMap.updateBiddersMapUse(this);">' +
-        '<span class="tooltiptext">ID кампании биддера из интерфейса ADFOX (уникальный)</span>' +
+        '<span class="tooltiptext">ID кампании биддера из интерфейса ADFOX (уникальный для каждого покупателя)</span>' +
         '<span class="error notUnique">ID кампании должен быть уникальным</span>' +
         '<span class="error">Должно быть заполнено</span>' +
         '<span class="typeError">Должны быть цифры</span>' +
@@ -150,14 +150,14 @@ var AdUnits = {
       '<span class="error adUnitsTooltip">Введите ID контейнера</span>' +
       '</div>' +
       '<div class="tooltip">' +
-      '<span class="tooltiptext sizesTooltip">Массив массивов:<br>[Ш,В]<br>или<br>[[Ш,В],[Ш,В]]</span>' +
+      '<span class="tooltiptext sizesTooltip">Укажите размеры в формате:<br>[Ш,В]<br>или<br>[[Ш,В],[Ш,В]]</span>' +
       '<input class="sizes" placeholder="Размеры" style="display: none;" onkeyup="AdUnits.updateSizes(this)">' +
       '<span class="error required">Размеры обязательны для блока с AdRiver или betweenDigital</span>' +
       '</div> ' +
       '  <br> <div class="units_bidder"> ' +
       '</div> ' +
-      '<p style="font-size: 15px;">Биддеры и их placement id:</p>' +
-      '<button class="default" id="addBidder" onclick="AdUnits.addBidder(this);">Добавить</button>' +
+      '<p style="font-size: 15px; padding:5px 0 0 10px;">Биддеры и их placement id:</p>' +
+      '<button class="default" id="addBidder" onclick="AdUnits.addBidder(this);">Добавить покупателя</button>' +
       '</div>';
     units_element.innerHTML = units_element_inner;
     ad_units.insertAdjacentElement("beforeEnd", units_element);
@@ -174,7 +174,7 @@ var AdUnits = {
       document.getElementById("fillAdUnits").style.visibility = "hidden"
     }
     if (document.getElementsByClassName("bidder_map").length === 0) {
-      document.getElementById("mainError").innerHTML = "Сначала добавьте биддеров";
+      document.getElementById("mainError").innerHTML = "Сначала добавьте биддеров в Bidders Map";
       document.getElementById("mainError").style.visibility = "visible";
       setTimeout(function() {
         document.getElementById("mainError").style.visibility = "hidden";
@@ -249,7 +249,7 @@ var AdUnits = {
               }
             });
             elem.parentNode.parentNode.parentNode.parentNode.getElementsByTagName("button")[0].disabled = true;
-            document.getElementById("sizesError").innerHTML = "Заполните размеры";
+            document.getElementById("sizesError").innerHTML = "Заполните размеры в поле Размеры (добавилось справа от 'ID контейнера ADFOX')";
             document.getElementById("sizesError").style.visibility = "visible";
             for (var i = 0; i < generateButtons.length; i += 1) {
               generateButtons[i].disabled = true;
@@ -332,7 +332,7 @@ var AdUnits = {
         var bidder_element = document.createElement("P");
         bidder_element_inner = '<div class="bidder_row"> <select class="bidder"></select>' +
           '<div class = "tooltip placementIdTooltip">' +
-          '<span class="error tooltiptext">Placement ID получается на стороне биддера</span>' +
+          '<span class="error tooltiptext">Placement ID получите на стороне биддера</span>' +
           '<input class="placementId" placeholder="Placement ID" onfocus="AdUnits.addSizes(this);" oninput="AdUnits.updateBidderElement(this);">' +
           '</div>' +
           '<div class="delete placementDelete" onclick="AdUnits.removeBidder(this);this.parentNode.remove();"></div>';
