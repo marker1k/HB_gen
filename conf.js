@@ -18,7 +18,7 @@ var biddersMap = {
   updateBiddersMapUse: function(elem) {
     elem.parentNode.parentNode.querySelector(".bidderName").disabled = true;
     var campaign_value = elem.parentNode.querySelector(".bidderId");
-    var campaign = elem.value;
+    var campaign = Number(elem.value).toString();
     var bidder = elem.parentNode.parentNode.querySelector(".bidderName").value;
     if (elem.value != "") {
       if (isNaN(campaign)) {
@@ -462,6 +462,7 @@ var main = {
     }, 1500)
   },
   alphanumeric: /^[0-9a-zA-Z]+$/,
+  numbers: /^[0-9]{0,}$/,
   highlightCode: function() {
     if (document.getElementsByClassName("CodeMirror").length > 0) {
       document.getElementsByClassName("CodeMirror")[0].remove();
@@ -502,6 +503,7 @@ var main = {
   makeInstall: function() {
     var bidders = [];
     var check = true;
+    var emptyPlacementErrors = "";
     AdUnits.adUnitsUsed.forEach(function(element) {
       if (Object.keys(element).length === 0 && element.constructor === Object) {
         document.getElementById("emptyBidder").innerHTML = "Заполните все поля";
@@ -524,6 +526,11 @@ var main = {
         });
       });
 
+      AdUnits.adUnitsUsed.forEach(function(unit){
+        if (unit.bids.length == 0) {
+          emptyPlacementErrors += "Заполните placementId для контейнера " + unit.code + "<br>";
+        }
+      });
 
       if (bidders.length == 0) {
         if (Object.keys(biddersMap.campaignIdUsed).length === 0 && biddersMap.campaignIdUsed.constructor === Object) {
@@ -532,6 +539,12 @@ var main = {
         } else if (AdUnits.adUnitsUsed.length == 0) {
           document.getElementById("fillAdUnits").innerHTML = "Заполните Ad Units";
           document.getElementById("fillAdUnits").style.visibility = "visible";
+        } else if (emptyPlacementErrors != "") {
+          document.getElementById("emptyPlacement").innerHTML = emptyPlacementErrors;
+          document.getElementById("emptyPlacement").style.visibility = "visible";
+          setTimeout(function(){
+            document.getElementById("emptyPlacement").style.visibility = "hidden";
+          }, 2000);
         } else {
           main.make();
         }
