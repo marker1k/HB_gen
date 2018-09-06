@@ -10,6 +10,10 @@ var biddersMap = {
     var bidder = elem.parentNode.getElementsByClassName("bidderName")[0].value;
     biddersMap.biddersMapUse.push(bidder);
     delete biddersMap.campaignIdUsed[bidder];
+    if (elem.parentNode.getElementsByTagName("input")[0].classList.contains("err") && document.getElementById("mainError").style.visibility == "visible") {
+      document.getElementById("mainError").style.visibility = "hidden";
+      document.getElementById("addBiddersMapUiElement").disabled = false;
+    }
   },
   updateBiddersMapUse: function(elem) {
     elem.parentNode.parentNode.querySelector(".bidderName").disabled = true;
@@ -404,7 +408,11 @@ var timeoutInput = {
       if (elem.classList.contains("err")) {
         elem.classList.remove("err");
       }
-      this.timeout = elem.value;
+      if (elem.value == "") {
+        this.timeout = "500";
+      } else {
+        this.timeout = elem.value.trim();
+      }
     }
   }
 };
