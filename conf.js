@@ -1,4 +1,4 @@
-var biddersList = ["criteo", "adriver", "hpmd", "buzzoola", "myTarget", "facebook", "betweenDigital", "aio", "getintent"];
+var biddersList = ["criteo", "adriver", "hpmd", "buzzoola", "myTarget", "facebook", "betweenDigital", "aio", "getintent", "Tinkoff"];
 
 // Begin of BiddersMap section
 
