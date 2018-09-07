@@ -27,6 +27,7 @@ var biddersMap = {
         campaign_value.focus();
         document.getElementById("mainError").innerHTML = "В ID кампании должны быть только цифры";
         document.getElementById("mainError").style.visibility = "visible";
+        delete biddersMap.campaignIdUsed[bidder];
       } else {
         main.removeFromArray(biddersMap.biddersMapUse, bidder);
         if (Object.values(biddersMap.campaignIdUsed).indexOf(campaign) == -1) {
@@ -48,8 +49,9 @@ var biddersMap = {
           // var campaign_value = elem.parentNode.querySelector(".bidderId");
           campaign_value.classList.add("err");
           campaign_value.focus();
-          document.getElementById("mainError").innerHTML = "ID кампаний должны быть уникальными.";
+          document.getElementById("mainError").innerHTML = "ID кампаний должны быть уникальными и в них не должно быть пробелов.";
           document.getElementById("mainError").style.visibility = "visible";
+          delete biddersMap.campaignIdUsed[bidder];
         }
       }
     }
