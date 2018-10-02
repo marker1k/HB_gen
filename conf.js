@@ -78,16 +78,21 @@ var biddersMap = {
                 x.add(option, x[i]);
             }
             bid_map.insertAdjacentElement("beforeEnd", map_element);
-        } else if (this.biddersMapUse.length === 0) {
-            console.log("No more bidders!");
+        } else if (this.biddersMapUse.length == 0) {
+            var errElem = document.getElementById("timeoutError");
+            errElem.innerHTML = "Больше нет доступных биддеров для добавления";
+            errElem.style.visibility = "visible";
+            setTimeout(function() {
+                errElem.style.visibility = "hidden";
+            }, 2000);
         }
     },
     addBiddersMapUiElement: function(elem) {
         // biddersMap.addUi();
-        if (document.getElementsByClassName("bidderName").length === 0) {
+        if (document.getElementsByClassName("bidderName").length == 0) {
             biddersMap.addUi();
         } else if (document.getElementsByClassName("bidderName").length > 0) {
-            if (document.getElementsByClassName("bidderId")[document.getElementsByClassName("bidderId").length - 1].value === "") {
+            if (document.getElementsByClassName("bidderId")[document.getElementsByClassName("bidderId").length - 1].value == "") {
                 document.getElementById("mainError").innerHTML = "Заполните все ID кампаний";
                 document.getElementById("mainError").style.visibility = "visible";
             } else {
@@ -111,7 +116,7 @@ var AdUnits = {
     addSizes: function(elem) {
         var bidder = elem.parentNode.parentNode.getElementsByClassName("bidder")[0].value;
         var sizes = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tooltip")[1].getElementsByClassName("sizes")[0];
-        if (bidder === "adriver" || bidder === "betweenDigital") {
+        if (bidder == "adriver" || bidder == "betweenDigital" || bidder == "facebook") {
             sizes.style.display = "block";
         }
     },
@@ -142,7 +147,6 @@ var AdUnits = {
         }
     },
     addUi: function(elem) {
-        // console.log(elem.previousElementSibling);
         AdUnits.adUnitsUsed.push({});
         var ad_units = document.getElementById("adUnitsInner");
         units_element = document.createElement("P");
@@ -247,7 +251,7 @@ var AdUnits = {
                 }
 
             } else {
-                if (bidder == "adriver" || bidder == "betweenDigital") {
+                if (bidder == "adriver" || bidder == "betweenDigital" || bidder == "facebook") {
                     var sizes = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("sizes")[0].value;
                     if (sizes == "") {
                         AdUnits.adUnitsUsed[index].bids.push({
@@ -315,7 +319,6 @@ var AdUnits = {
                 }
             }
         } else {
-            console.log(elem.parentNode.parentNode.getElementsBy);
             document.getElementById("adUnitError").innerHTML = bidder + " уже использует такой placementId";
             document.getElementById("adUnitError").style.visibility = "visible";
             for (var i = 0; i < generateButtons.length; i += 1) {
@@ -330,13 +333,10 @@ var AdUnits = {
                 generateButtons[i].disabled = false;
             }
         }
-        console.log(elem.parentNode.parentNode);
-        console.log(main.getPreviousSiblings(elem.parentNode.parentNode).length);
         var index = main.getPreviousSiblings(elem.parentNode.parentNode).length;
-        // var index = elem.parentNode.id;
         if (elem.parentNode.getElementsByClassName("bidder").length < Object.keys(biddersMap.campaignIdUsed).length) {
             var code = elem.parentNode.getElementsByClassName("tooltip")[0].getElementsByClassName("code")[0];
-            if (code.value !== "") {
+            if (code.value != "") {
                 var bidder_element = document.createElement("P");
                 bidder_element_inner = '<div class="bidder_row"> <select class="bidder"></select>' +
                     '<div class = "tooltip placementIdTooltip">' +
@@ -365,6 +365,13 @@ var AdUnits = {
                     document.getElementById("adUnitError").style.visibility = "hidden";
                 }, 1500);
             }
+        } else {
+            var errElem = document.getElementById("timeoutError");
+            errElem.innerHTML = "В каждом adUnit биддер может быть использован только по одному разу.";
+            errElem.style.visibility = "visible";
+            setTimeout(function() {
+                errElem.style.visibility = "hidden";
+            }, 2300);
         }
     },
     removeBidder: function(elem) {
@@ -374,7 +381,7 @@ var AdUnits = {
         var bidder = elem.parentNode.getElementsByClassName("bidder")[0].value;
         var arrIndex = AdUnits.adUnitsUsed[index].bids.indexOf(main.search(AdUnits.adUnitsUsed[index].bids, bidder, 'bidder'))
         AdUnits.adUnitsUsed[index].bids.splice(arrIndex, 1);
-        if (bidder == "adriver" || bidder == "betweenDigital") {
+        if (bidder == "adriver" || bidder == "betweenDigital" || bidder == "facebook") {
             elem.parentNode.parentNode.parentNode.getElementsByClassName("sizes")[0].value = "";
             elem.parentNode.parentNode.parentNode.getElementsByClassName("sizes")[0].style.display = "none";
             delete AdUnits.adUnitsUsed[index].sizes;
