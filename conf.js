@@ -472,7 +472,7 @@ var main = {
             document.getElementById("timeoutError").style.visibility = "hidden";
         }, 1500)
     },
-    alphanumeric: /^[0-9a-zA-Z_]+$/,
+    alphanumeric: /.*/,
     numbers: /^[0-9]{0,}$/,
     highlightCode: function() {
         if (document.getElementsByClassName("CodeMirror").length > 0) {
